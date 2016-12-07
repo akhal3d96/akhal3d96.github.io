@@ -39,7 +39,7 @@
 	<div class="canvas-container">
 		<canvas width="210" height="210"></canvas>
 	</div>
-	<button type="button" class="btn btn-lg btn-block btn-danger">STOP</button>
+	<button type="button" class="btn btn-large btn-block btn-danger">STOP</button>
     </div>
       <hr>
       <footer>
