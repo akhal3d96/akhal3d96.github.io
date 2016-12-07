@@ -30,12 +30,12 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-	  <img class="navbar-brand"src=img/logo.png/>
+	  <img class="navbar-brand"src=img/logo.png>
           <a class="navbar-brand" href="#">ASME Wheel</a>
         </div>
       </div>
     </nav>
-    <img src="img/why.png"/>
+    <img id="why" src="img/why.png"/>
     <div class="container container-main">
 	<div class="canvas-container">
 		<canvas width="210" height="210"></canvas>
