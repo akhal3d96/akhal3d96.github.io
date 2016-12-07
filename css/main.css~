@@ -1,0 +1,35 @@
+.navbar-header {
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+.navbar-brand {float:none;}
+
+.canvas-container {
+	margin: 0 auto;
+	width: 210px;
+	height:210px;
+ }
+ 
+
+           
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
