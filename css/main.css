@@ -10,7 +10,9 @@
 	width: 210px;
 	height:210px;
  }
-
+.copyrights{
+    font-size: 80%;
+}
  .btn{
 	 margin-top: 2%;
  }
