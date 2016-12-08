@@ -15,6 +15,7 @@
 }
  .btn{
 	 margin-top: 2%;
+	 margin-bottom: 2%;
  }
 body {
      background-image: url("../img/back.jpg");
@@ -26,6 +27,16 @@ body {
    height:100%;
    width:90%;
     margin-left: 7%;
+}
+
+.wizard {
+	width: 20%;
+	display: inline-block;
+}
+.text {
+	width: 67%;
+	display: inline-block;
+	font-family: 'VT323', monospace;
 }
 /* ==========================================================================
    Author's custom styles
