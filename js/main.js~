@@ -1,8 +1,9 @@
 class Benefit {
-	constructor(benefitName,benefitText,benefitNumber){
+	constructor(benefitName,benefitText,benefitNumber,benefitURL){
 		this.benefitName = benefitName;
 		this.benefitText = benefitText;
 		this.benefitNumber = benefitNumber;
+		this.benefitURL = benefitURL;
 	}
 
     get benefitName() {
@@ -23,24 +24,31 @@ class Benefit {
     set benefitText(value){
       this._benefitText = value
     }
-
+    get benefitURL (){
+	    return this._benefitURL;
+    }
+    set benefitURL (value){
+	    this._benefitURL = value;
+    }
+	
     showBenefit(){
+	    var that = this;
 	    bootbox.alert({ 
   	size: "large",
  	 title: "<b>"+this.benefitNumber + "</b> appears to be your lucky number!",
   	message: "<b>"+this.benefitNumber+"</b> means: "+this.benefitText, 
- 	 callback: function(){ /* your callback code */ }
+ 	 callback: function(){window.location = that.benefitURL;}
 })
     }
 
 }
 var BenefitsArray = [];
 
-BenefitsArray.push(new Benefit("ASME Access Engineering","An Online tool powered by McGraw-Hill Education contains more than 600 categorized volumes and references, in addition to Curriculum Maps in thousands of engineering fields.",1));
-BenefitsArray.push(new Benefit("E-Mentoring Program","One-to-one advice that provide you with career-guiding insights, help you solve engineering problems or expand your networking opportunities with professionals.",2));
-BenefitsArray.push(new Benefit("ASME SmartBrief","A frequent e-newsletter especially for mechanical engineers that provide them with a quick digest of the latest engineering news and trends from around the world and across their profession.",3));
-BenefitsArray.push(new Benefit("Mechanical Engineering Magazine","A monthly publication that keeps you updated with the latest technology worldwide. It delivers an interdisciplinary view into engineering trends and breakthroughs.",4));
-BenefitsArray.push(new Benefit("More!","In addition to more benefits like attending regional and international conferences, Internships and Scholarships.",5));
+BenefitsArray.push(new Benefit("ASME Access Engineering","An Online tool powered by McGraw-Hill Education contains more than 600 categorized volumes and references, in addition to Curriculum Maps in thousands of engineering fields.",1,"https://m.facebook.com/ASME.Alexandria.University/?fref=hovercard"));
+BenefitsArray.push(new Benefit("E-Mentoring Program","One-to-one advice that provide you with career-guiding insights, help you solve engineering problems or expand your networking opportunities with professionals.",2,"https://m.facebook.com/ASME.Alexandria.University/?fref=hovercard"));
+BenefitsArray.push(new Benefit("ASME SmartBrief","A frequent e-newsletter especially for mechanical engineers that provide them with a quick digest of the latest engineering news and trends from around the world and across their profession.",3,"https://m.facebook.com/ASME.Alexandria.University/?fref=hovercard"));
+BenefitsArray.push(new Benefit("Mechanical Engineering Magazine","A monthly publication that keeps you updated with the latest technology worldwide. It delivers an interdisciplinary view into engineering trends and breakthroughs.",4,"https://m.facebook.com/ASME.Alexandria.University/?fref=hovercard"));
+BenefitsArray.push(new Benefit("More!","In addition to more benefits like attending regional and international conferences, Internships and Scholarships.",5,"https://m.facebook.com/ASME.Alexandria.University/?fref=hovercard"));
 	
 var canvas = document.querySelector('canvas');
 
