@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Last.fm Collage Maker</title>
+    <link rel="stylesheet" href="css/bower.css" />
+    <link rel="stylesheet" href="css/spin.css" />
+
+</head>
+
+<body class="container">
+    <div class="">
+
+        <div class="jumbotron">
+            <h1>Last.fm Collages Maker!</h1>
+            <p class="lead">Listen to music and share your taste with the world! This is a HTML5 expermintal website to render last.fm charts/collages in the client side without relying on servers. Feel free to play around and don't forget to save and share your charts. :-)</p>
+        </div>
+
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input id="username" name="username" autofocus="true" type="text" placeholder="Enter your username"></input>
+            </div>
+            <div class="form-group">
+                <select name="period">
+				  <option value="weeklyalbumchart" selected>Weekly chart</option>
+				  <optgroup label="Tops">
+					  <option value="7day">7 Days</option>
+					  <option value="1month">1 Month</option>
+					  <option value="3month">3 Month</option>
+					  <option value="6month">6 Month</option>
+					  <option value="12month">12 Month</option>
+					  <option value="overall">Overall (All the time)</option>
+				  </optgroup>
+			</select>
+                <select name="size">
+				<option value="3x3">3x3</option>
+				<option value="4x4">4x4</option>
+				<option value="5x5">5x5</option>
+				<option value="6x6">6x6</option>
+				<option value="7x7" selected>7x7</option>
+				<option value="2x8">2x6 (last.fm sidebar)</option>
+				<!--option value="10x10">10x10</option></!-->
+      </select>
+            </div>
+            <input type="button" class="btn btn-danger" value="Generate"></input>
+        </form>
+        <canvas id="canvas" width="100" height="100"></canvas>
+        <script s type="text/javascript" src="js/bower.js"></script>
+        <script type="text/javascript" src="js/bundle.js"></script>
+    </div>
+</body>
+
+</html>
