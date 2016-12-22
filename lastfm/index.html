@@ -7,8 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Last.fm Collage Maker</title>
     <link rel="stylesheet" href="css/bower.css" />
-    <!--link rel="stylesheet" href="css/spin.css" /-->
 
+    <meta property="og:url"                content="https://nemoload.github.io/lastfm/" />
+  	<meta property="og:type"               content="article"/>
+  	<meta property="og:title"              content="Lastfm Collages Maker" />
+  	<meta property="og:description"        content="Share your taste with the world and generate cool Last.fm charts." />
+
+
+    <!--link rel="stylesheet" href="css/spin.css" /-->
 </head>
 
 <body class="container">
@@ -47,8 +53,11 @@
       </select>
             </div>
             <input type="button" class="btn btn-danger" value="Generate"></input>
+            <input style="visibility:hidden;" type="button" class="btn btn-primary" value="Save"></input>
         </form>
-        <canvas id="canvas" width="100" height="100"></canvas>
+        <div id="canvas_container">
+        <canvas class="canvas" width="100" height="100"></canvas>
+        <div>
         <script s type="text/javascript" src="js/bower.js"></script>
         <script type="text/javascript" src="js/bundle.js"></script>
 
