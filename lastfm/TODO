@@ -1,0 +1,2 @@
+* Add an error container which is basically a <div> element.
+* Add Imgur uploading service to upload to a certain account which we will share the most viewed charts to a Twiiter accont and/or Facebook page.
