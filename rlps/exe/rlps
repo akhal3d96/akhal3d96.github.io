@@ -1,4 +1,0 @@
-#!/usr/bin/env ruby
-$LOAD_PATH.push File.expand_path('../../lib', __FILE__)
-require 'rlps'
-RLPS.processes.each { |p| print "#{p.name}\t#{p.pid}\n" }
