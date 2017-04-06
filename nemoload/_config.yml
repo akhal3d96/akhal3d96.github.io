@@ -13,13 +13,13 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Ahmed Khaled | nemoload
+title: Ahmed Khaled
 email: nemoload@aol.com
 description: > # this means to ignore newlines until "baseurl:"
   This is me, Ahmed Khaled, the ony resident of the internet who
   poses the username nemoload. This is my  - very - space where I
   display a wide spectrum of my knowledge, opinion, daily life and feelings.
-baseurl: "/" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "nemoload.github.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: nemoload
 github_username:  nemoload
