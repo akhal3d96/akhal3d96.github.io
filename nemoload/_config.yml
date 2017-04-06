@@ -20,7 +20,7 @@ description: > # this means to ignore newlines until "baseurl:"
   poses the username nemoload. This is my  - very - space where I
   display a wide spectrum of my knowledge, opinion, daily life and feelings.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "nemoload.github.com" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://nemoload.github.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: nemoload
 github_username:  nemoload
 
