@@ -6,7 +6,7 @@ permalink: /about/
 My name is Ahmed Khaled. Probably 
 I may not seem very unfriendly but I love talking with other people.
 I really appreciate good [music](http://www.last.fm/user/Nemoload),
-good [movies](http://www.imdb.com/user/ur49451939/ratings) and
+[movies](http://www.imdb.com/user/ur49451939/ratings) and
 [books](https://www.goodreads.com/user/show/11788339-ahmed-kh-aled).
 I usually spend my time doing the aforementioned activities or hacking
 and playing with my computer. I also consider myself a
