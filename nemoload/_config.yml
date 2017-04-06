@@ -23,7 +23,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://nemoload.github.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: nemoload
 github_username:  nemoload
-
+google_analytics: UA-88662750-3
 # Build settings
 markdown: kramdown
 theme: minima
