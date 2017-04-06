@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="https://nemoload.github.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://nemoload.github.com/" rel="alternate" type="text/html" /><updated>2017-04-06T05:25:08+02:00</updated><id>https://nemoload.github.com/</id><title type="html">Ahmed Khaled</title><subtitle>This is me, Ahmed Khaled, the ony resident of the internet who poses the username nemoload. This is my  - very - space where I display a wide spectrum of my knowledge, opinion, daily life and feelings.
+</subtitle><entry><title type="html">How We Went Down The Abyss Through The Data Bus</title><link href="https://nemoload.github.com/diaries/2017/04/05/abyss-through-data-bus.html" rel="alternate" type="text/html" title="How We Went Down The Abyss Through The Data Bus " /><published>2017-04-05T00:52:55+02:00</published><updated>2017-04-05T00:52:55+02:00</updated><id>https://nemoload.github.com/diaries/2017/04/05/abyss-through-data-bus</id><content type="html" xml:base="https://nemoload.github.com/diaries/2017/04/05/abyss-through-data-bus.html">&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;urllib2&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;threading&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#pygame.init()&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SearchForChange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;threading&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Timer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SearchForChange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;urllib2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;urlopen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'http://www.nemowebwork.t15.org/a.txt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;readline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+		
+		&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;shutdown -h now&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		
+		&lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;if Text.readline() == &quot;&quot;:
+		print Text.readline()
+		pygame.mixer.music.load(&quot;Downloads/d.mp3&quot;)
+		pygame.mixer.music.play()
+		pygame.event.wait()
+		pygame.mixer.music.rewind&quot;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;SearchForChange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;	
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is one of my early codes that I wrote back in the middle of my highschool time in 2013. I was introduced to programming when I was in preparatory level but I thought it’s something magicians only can do. I had very bad internet access back then so I didn’t dig more. I got a better internet access in the beginning of my highschool and then things began to change dramatically to me regarding programming and coding. The internet was so vast I find many resources and tutorials for learning programming and I was really enjoying creating things with my computer but I had three main problems that I discovered later when I reflected my progress:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;I only learned from Arabic content, which was very bad and poorly written by people who weren’t a good programmers themselves and it didn’t change nor improve very much today. Duh.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;My English wasn’t in-the-point. I used to be naturally very good in English comparing with my classmates. The fact that I spent so much time playing games, browsing the internet, listening to foreign songs and watching English-spoken movies made me very curious and interested in learning it. But that wasn’t enough for me to watch an English tutorial about some technology or programming language or read an English book.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;I didn’t have a mentor. I lived in a very rural place with limited interaction with people with various expertise. As they say I was one of a kind! I think having a mentor would have accelerated my progress . I – unfortunately – wasted a lot of time walking in spiral paths.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In this age, with my small amount of knowledge and my crippling and slow learning rate I created many cool things like a note taking application which intended to imitate the behavior of the per-installed Sticky Notes and image uploader that utilized FTP protocol and uploaded this images to a free hosting service. I was very curious about programming. The idea of creating things from nothing was fascinating. I had a purpose named CREATING THINGS!&lt;/p&gt;
+
+&lt;p&gt;At this age I had many spare time. I didn’t go to school daily I preferred staying at home reading books, watching movies and TV shows and wandering around the internet reading forums and tutorials. I was very curious and eager to learn about almost everything about the computers. I had gradually moving from creating application using Microsoft Visual Studio drag-and-drop and copy-and-past techniques to the web technologies. I also was had been moving gradually from imitating tutorials examples to create my things and my ideas, what a pleasurable thing to do!&lt;/p&gt;
+
+&lt;p&gt;It was as like entering a new world and I discovered another kind of pleasure. My English begun to improve slightly and W3School was my home. I learned PHP and JavaScript alongside the web design basics like HTML and CSS in a very short time and created my first complete website/web application Quotepedia, which was intended to be something like Wikipedia but for quotes of famous writers and novelists (The most unsecure code I have ever wrote in my life. The performance was horrible so was the code but it worked). I hosted it on a free Chinese hosting service. It was cheap and slow but it did its purpose and gave me the freedom to experiment.&lt;/p&gt;
+
+&lt;p&gt;On a parallel line I was also getting into the ‘Linux thing’ I installed (yes as you guessed) Ubuntu and I began to move around the distribution  and reading a lot about the Linux world. Another new world had opened his gates to me. Very intense amount of new information, and once again it was very amusing. I acquired new knowledge about the basics of computers and how they work. The booting sequence, the kernel, some history of the history of the computer, ..etc&lt;/p&gt;
+
+&lt;p&gt;The GNU/Linux world was something very alien to me. It took me months to get into it and fully understand the basic architecture of the system.&lt;/p&gt;
+
+&lt;p&gt;What was really interesting to me that the GNU/Linux ecosystem was mainly focused on Non-GUI applications and scripts. For someone used to drag-and-drop in Visual Studio  getting into and being comfortable with this ecosystem wasn’t really easy. I was trying hard to learn and adapt this system whose applications and scripts are usually written in C and Python with a raw text editor without any external help. I tried to learn Python and it was very alien to me as I wasn’t very familiar with the indentation system of the Python. After reading and trying for weeks I got an initial grasp for what it is to be a a Python coder.&lt;/p&gt;
+
+&lt;p&gt;At this time I used to watch a lot of movies. I was very intrigued by the fascination of the science fiction movies, pop-science-based TV shows and movies that featured hackers. Just seeing those people playing with their computers and manipulation and controlling things was very amusing to me. My pleasure of creating things was very comparable with the geniality of manipulating and deconstructing things. For the fifteen years old of me Tony Stark was an idol and watching Dr. Sheldon and his geek friends talking and doing science was an essential ritual of my day.&lt;/p&gt;
+
+&lt;p&gt;So for now:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I loved computers.&lt;/li&gt;
+  &lt;li&gt;I loved creating things.&lt;/li&gt;
+  &lt;li&gt;I loved manipulation things and deconstructing it.&lt;/li&gt;
+  &lt;li&gt;I possessed a not-so-bad knowledge about many things.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;One day I waked up and then decided to do something cool! I wanted to control my laptop from my mobile. My mobile back then was Nokia 6303 Classic. Just a piece of metal with some electronics from the previous decade (maybe more!). I brainstormed knowing and came to a conclusion that I can utilize my humble web development expertise with my newly acquired Python scripting techniques.
+My mobile can’t create real-time or asynchronous communication with my computer nor a web server. But it can open a web page and send normal GET/POST requests. I told myself I can create a normal web page using that has some buttons those buttons writes certain values to a file on the server, this file    also can be accessed from my computer through FTP. I made a Python script that reads this file every two seconds and then do some action based on the values stored in this files. 
+It wasn’t the best approach nor the smartest one but it was a turning point in my life that changed it forever. The script did really work! I created an integrated system using different technologies. My twelve years old of myself was very impressed of my sixteen years old intelligence!
+It was an end to the drag-and-drop and copying and pasting tutorials. I’m know a HACKER/DEVELOPER who can think independently, solve his problems and create the things he wants. Without exaggeration, this was one of the most happiest moments that I’ll remember forever.&lt;/p&gt;
+
+&lt;p&gt;The fun part is this script was named aiid.py which is a shorthand for Ahmed Is In Danger. The script would play a mp3 file, which was the sound of an alarming siren. I told myself I could use this to tell my family that I’m in something danger. My computer was usually turned on and online downloading something so my mobile can get an access to the internet and I can press the button of the alarm will set off! But I didn’t know that this alarm was an alarm for a drastic tragic changes in my life..つづく&lt;/p&gt;</content><author><name></name></author><summary type="html">```python #!/usr/bin/env python import urllib2 import threading import os</summary></entry></feed>
