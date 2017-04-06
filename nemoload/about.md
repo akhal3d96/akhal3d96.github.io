@@ -3,8 +3,8 @@ layout: page
 title: About
 permalink: /about/
 ---
-My name is Ahmed Khaled. Probably 
-I may not seem very unfriendly but I love talking with other people.
+My name is Ahmed Khaled. Probably {{ "now"  | date: "%Y" | minus: 1996 }} 
+years old. I may not seem very unfriendly but I love talking with other people.
 I really appreciate good [music](http://www.last.fm/user/Nemoload),
 [movies](http://www.imdb.com/user/ur49451939/ratings) and
 [books](https://www.goodreads.com/user/show/11788339-ahmed-kh-aled).
