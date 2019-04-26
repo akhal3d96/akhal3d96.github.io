@@ -85,7 +85,7 @@ canvas.addEventListener('click', (event) => {
     if (score.find(e => e == 3)) {
         alert("You win!")
     } else if (score.find(e => e == -3)) {
-        console.log("You lost :(")
+       alert("You lost :(")
     }
 
     // console.log(score)
