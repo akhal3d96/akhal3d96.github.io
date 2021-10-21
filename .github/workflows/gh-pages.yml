@@ -2,8 +2,8 @@ name: Blog pipeline
 
 on:
   push:
-  branches:
-    - blog
+    branches:
+      - blog
 
 jobs:
   jekyll:
