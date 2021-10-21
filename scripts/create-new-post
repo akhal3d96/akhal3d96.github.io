@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+TITLE=$1
+
+FILENAME_TITLE=$(echo "$TITLE" | xargs echo -n  |tr [:upper:] [:lower:] | tr -s [:blank:] '-')
+FILENAME=$(LC_ALL=en_US.UTF-8 date +'%F')-$FILENAME_TITLE.markdown
+
+
+cat <<-EOF >> ./_posts/$FILENAME
+---
+layout: post
+title:  $TITLE
+---
+EOF
