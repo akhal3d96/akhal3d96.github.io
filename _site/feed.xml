@@ -1,17 +1,140 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2021-10-21T15:15:23-05:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">Ahmed Khaled</title><subtitle>A computer hobbyist who does DevOps for a living </subtitle><entry><title type="html">Welcome to Jekyll!</title><link href="http://0.0.0.0:4000/jekyll/update/2021/10/21/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2021-10-21T11:23:51-05:00</published><updated>2021-10-21T11:23:51-05:00</updated><id>http://0.0.0.0:4000/jekyll/update/2021/10/21/welcome-to-jekyll</id><content type="html" xml:base="http://0.0.0.0:4000/jekyll/update/2021/10/21/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2021-10-22T06:25:01-05:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">Ahmed Khaled</title><subtitle>A computer hobbyist who does DevOps for a living </subtitle><entry><title type="html">Maintain local domains for your private network</title><link href="http://0.0.0.0:4000/2021/10/21/maintain-local-domains-for-your-private-network.html" rel="alternate" type="text/html" title="Maintain local domains for your private network" /><published>2021-10-21T00:00:00-05:00</published><updated>2021-10-21T00:00:00-05:00</updated><id>http://0.0.0.0:4000/2021/10/21/maintain-local-domains-for-your-private-network</id><content type="html" xml:base="http://0.0.0.0:4000/2021/10/21/maintain-local-domains-for-your-private-network.html">&lt;p&gt;I have always wanted to access private servers (accessed only through VPN or SSH tunnels) through domains without going through the hassle of locally modifying hosts files in the client side (me and my colleagues) or the SSH config files, so here’s my attempt to solve this problem.&lt;/p&gt;
 
-&lt;p&gt;Jekyll requires blog post files to be named according to the following format:&lt;/p&gt;
+&lt;p&gt;I used a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t3a.nano&lt;/code&gt; AWS EC2 instance to demonstrate the idea with Ubuntu 20.04 on it, with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OpenVPN&lt;/code&gt; as my VPN server and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dnsmasq&lt;/code&gt; as a DNS server.&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YEAR-MONTH-DAY-title.MARKUP&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dnsmasq&lt;/code&gt; instead of something like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BIND&lt;/code&gt; because it’s much easier to setup and maintain.&lt;/p&gt;
 
-&lt;p&gt;Where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YEAR&lt;/code&gt; is a four-digit number, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MONTH&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DAY&lt;/code&gt; are both two-digit numbers, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MARKUP&lt;/code&gt; is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+&lt;h2 id=&quot;openvpn&quot;&gt;OpenVPN&lt;/h2&gt;
+&lt;p&gt;This was made only for demonstration purpose, so to quickly setting up an OpenVPN server without pain I used &lt;a href=&quot;https://github.com/angristan/openvpn-install&quot;&gt;angristan/openvpn-install&lt;/a&gt; script to do so.&lt;/p&gt;
 
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x openvpn-install.sh
 
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry></feed>
+&lt;span class=&quot;nv&quot;&gt;CLIENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;lt;name of your choice&amp;gt; &lt;span class=&quot;nv&quot;&gt;PORT_CHOICE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2 &lt;span class=&quot;nv&quot;&gt;PORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;443 &lt;span class=&quot;nv&quot;&gt;PROTOCOL_CHOICE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2 &lt;span class=&quot;nv&quot;&gt;AUTO_INSTALL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;y ./openvpn-install.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This will generate an OpenVPN profile with the name you chose in your home directory.&lt;/p&gt;
+
+&lt;h2 id=&quot;systemd-resolvd&quot;&gt;systemd-resolvd&lt;/h2&gt;
+
+&lt;p&gt;In order for the DNS server we will use we have to disable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemd-resolvd&lt;/code&gt; from listening to port 53:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /etc/systemd/resolved.conf
+
+[Resolve]
+DNSStubListener=no
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;dnsmasq&quot;&gt;dnsmasq&lt;/h2&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;dnsmasq
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set localhost addresses as the only nameservers in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/resolv.conf&lt;/code&gt; to route all the DNS queries to our DNS server&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /etc/resolv.conf
+
+nameserver ::1
+nameserver 127.0.0.1
+options trust-ad
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now for the dnsmasq configuration:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /etc/dnsmasq.conf
+
+no-resolv
+local=/lan/
+listen-address=::1,127.0.0.1,10.0.1.136
+expand-hosts
+domain=lan
+cache-size=1000
+server=8.8.8.8
+server=8.8.4.4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;dnsmasq-configuration-explained&quot;&gt;dnsmasq configuration explained:&lt;/h4&gt;
+
+&lt;p&gt;no-resolv: don’t read &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/resolv.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;listen-address: The addresses we want to listen for a connection from. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10.0.1.136&lt;/code&gt; is the private IP of the EC2 instance dnsmasq is installed in.&lt;/p&gt;
+
+&lt;p&gt;domain and local: our custom domain &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.lan&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;expand-hosts: To read hostnames from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; and resolve it as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hostname.lan&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;cache-size: cache 1000 DNS query. Default is 150.&lt;/p&gt;
+
+&lt;p&gt;server: if dnsmasq can’t resolve the query call an external server&lt;/p&gt;
+
+&lt;p&gt;To add a new host or domain to the network simply add it in the hosts file:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /etc/hosts
+
+...
+10.0.1.136 messi
+10.0.1.136 salah
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;test-our-setup&quot;&gt;Test our setup&lt;/h2&gt;
+&lt;p&gt;Now to test if our configuration works I run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dig&lt;/code&gt; from my client machine, which is connected to my private network through VPN, with the domains &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;messi.lan&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;salah.lan&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;messi.lan&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# dig messi.lan
+; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.16.8-Ubuntu &amp;lt;&amp;lt;&amp;gt;&amp;gt; messi.lan
+;; global options: +cmd
+;; Got answer:
+;; -&amp;gt;&amp;gt;HEADER&amp;lt;&amp;lt;- opcode: QUERY, status: NOERROR, id: 56241
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;messi.lan.			IN	A
+
+;; ANSWER SECTION:
+messi.lan.		0	IN	A	10.0.1.136
+
+;; Query time: 448 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; MSG SIZE  rcvd: 54
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;salah.lan&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# dig salah.lan
+; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.16.8-Ubuntu &amp;lt;&amp;lt;&amp;gt;&amp;gt; salah.lan
+;; global options: +cmd
+;; Got answer:
+;; -&amp;gt;&amp;gt;HEADER&amp;lt;&amp;lt;- opcode: QUERY, status: NOERROR, id: 43569
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;salah.lan.			IN	A
+
+;; ANSWER SECTION:
+salah.lan.		0	IN	A	10.0.1.136
+;; Query time: 384 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; MSG SIZE  rcvd: 54
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Both returned our server IP address in the answer section. It works perfectly.&lt;/p&gt;
+
+&lt;p&gt;You can even use any web server (e.g: nginx) to test out setup by specifying different server names and request it from our client machine.&lt;/p&gt;
+
+&lt;h2 id=&quot;notes&quot;&gt;Notes&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;You might need to configure your OpenVPN client to use your DNS server address.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1kpqe70y1vjhqt8e94po.png&quot; alt=&quot;Alt Text&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;to-do&quot;&gt;To Do&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Configure OpenVPN to route only internal traffic through the VPN&lt;/li&gt;
+  &lt;li&gt;Cache the DNS queries locally to improve performance.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">I have always wanted to access private servers (accessed only through VPN or SSH tunnels) through domains without going through the hassle of locally modifying hosts files in the client side (me and my colleagues) or the SSH config files, so here’s my attempt to solve this problem.</summary></entry></feed>

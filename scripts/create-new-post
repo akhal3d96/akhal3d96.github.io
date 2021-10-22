@@ -1,7 +1,20 @@
 #!/usr/bin/env sh
+# 
+# create-new-post creates a new jekyll post 
+# with current day's date and a name given 
+# by the user.
+#
+# Author: Ahmed Khaled <ahmed.khaled1512@yahoo.com>
+#
+# License: ISC
+#
+# Usage: ./scripts/create-new-post "<post name>"
+#
+# Example: ./scripts/create-new-post "Maintain local domains for your private network"
+
 TITLE=$1
 
-FILENAME_TITLE=$(echo "$TITLE" | xargs echo -n  |tr [:upper:] [:lower:] | tr -s [:blank:] '-')
+FILENAME_TITLE=$(echo "$TITLE" | xargs echo -n  | tr [:upper:] [:lower:] | tr -s [:blank:] '-')
 FILENAME=$(LC_ALL=en_US.UTF-8 date +'%F')-$FILENAME_TITLE.markdown
 
 

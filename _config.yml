@@ -40,7 +40,14 @@ plugins:
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
 #
-# exclude:
+exclude:
+    - README.md
+    - asme/
+    - countdown/
+    - lastfm/
+    - solitaire/
+    - tic-tac-toe/
+    - weather/ 
 #   - .sass-cache/
 #   - .jekyll-cache/
 #   - gemfiles/

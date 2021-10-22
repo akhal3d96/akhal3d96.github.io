@@ -1,0 +1,43 @@
+.navbar-header {
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+.navbar-brand {float:none;}
+
+.canvas-container {
+	margin: 0 auto;
+	width: 210px;
+	height:210px;
+ }
+.copyrights{
+    font-size: 80%;
+}
+ .btn{
+	 margin-top: 2%;
+	 margin-bottom: 2%;
+ }
+body {
+     background-image: url("../img/back.jpg");
+     background-size: 100% 100%;
+
+
+}
+#why{
+   height:100%;
+   width:90%;
+    margin-left: 7%;
+}
+
+.wizard {
+	width: 20%;
+	display: inline-block;
+}
+.text {
+	width: 67%;
+	display: inline-block;
+	font-family: 'VT323', monospace;
+}
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
