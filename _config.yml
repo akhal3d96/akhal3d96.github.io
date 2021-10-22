@@ -41,13 +41,7 @@ plugins:
 # their entries' file path in the `include:` list.
 #
 exclude:
-    - README.md
-    - asme/
-    - countdown/
-    - lastfm/
-    - solitaire/
-    - tic-tac-toe/
-    - weather/ 
+    - README.md 
 #   - .sass-cache/
 #   - .jekyll-cache/
 #   - gemfiles/

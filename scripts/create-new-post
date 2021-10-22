@@ -24,3 +24,6 @@ layout: post
 title:  $TITLE
 ---
 EOF
+
+
+echo "Created _posts/$FILENAME"
