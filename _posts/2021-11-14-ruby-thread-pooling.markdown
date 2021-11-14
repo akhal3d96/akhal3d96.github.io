@@ -9,4 +9,24 @@ I was working on a web crawler, and aside from the huge (and expected) performan
 
 {% gist e18e03227e842d2b3349bbe4ff1afb33 thread_pool.rb %}
 
+Usage:
+```ruby
+
+# Create a Queue (they are thread-safe)
+jobs = Queue.new
+
+# Create tasks and add them to the queue
+samples = read_samples
+samples.each { |sample| jobs << sample }
+
+results = thread_pool(pool_size: 4, jobs: jobs) do |job|
+  # Each thread will excute this method
+  # with each item pop'ed from the queue
+  amazoneg = AmazonEG.new(job)
+  amazoneg.scrap
+end
+
+p results
+```
+
 Feedback are always welcome.
