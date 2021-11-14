@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# 
+# Interactively check spelling for files using `aspell`
+#
+# Author: Ahmed Khaled <ahmed.khaled1512@yahoo.com>
+#
+# License: ISC
+#
+# Usage: ./scripts/spell-check "<post name>"
+#
+# Example: ./scripts/spell-check _posts/2021-11-14-ruby-thread-pooling.markdown
+
+aspell check $1
