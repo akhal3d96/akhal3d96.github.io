@@ -23,7 +23,7 @@ email: ahmed.khaled1512@yahoo.com
 description: >- # this means to ignore newlines until "baseurl:"
   A computer hobbyist who does DevOps for a living 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "akhal3d96.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: akhal3d_
 github_username:  akhal3d96
 
@@ -43,10 +43,11 @@ plugins:
 exclude:
     - README.md 
 #   - .sass-cache/
-#   - .jekyll-cache/
+    - .jekyll-cache/
 #   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
+    - Gemfile
+    - Gemfile.lock
+    - "scripts/"
 #   - node_modules/
 #   - vendor/bundle/
 #   - vendor/cache/
