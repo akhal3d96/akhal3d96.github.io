@@ -1,11 +1,126 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2021-11-14T04:10:19-06:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">Ahmed Khaled</title><subtitle>A computer hobbyist who does DevOps for a living </subtitle><entry><title type="html">Ruby Thread Pooling</title><link href="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.html" rel="alternate" type="text/html" title="Ruby Thread Pooling" /><published>2021-11-14T00:00:00-06:00</published><updated>2021-11-14T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling</id><content type="html" xml:base="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.html">&lt;p&gt;I have been always, naively, restraing myself from using multithreading in Ruby because, as you know &lt;em&gt;Ruby doesn’t have real threads&lt;/em&gt; until I read these awesome &lt;a href=&quot;https://www.speedshop.co/2020/05/11/the-ruby-gvl-and-scaling.html&quot;&gt;artice&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/nateberkopec&quot;&gt;Nate Berkopec&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2021-11-23T09:16:49-06:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">Ahmed Khaled</title><subtitle>A computer hobbyist who does DevOps for a living </subtitle><entry><title type="html">Different system latencies compared to each other</title><link href="http://0.0.0.0:4000/2021/11/23/different-system-latencies-compared-to-each-other.html" rel="alternate" type="text/html" title="Different system latencies compared to each other" /><published>2021-11-23T00:00:00-06:00</published><updated>2021-11-23T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2021/11/23/different-system-latencies-compared-to-each-other</id><content type="html" xml:base="http://0.0.0.0:4000/2021/11/23/different-system-latencies-compared-to-each-other.html">&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Event&lt;/th&gt;
+      &lt;th&gt;Latency&lt;/th&gt;
+      &lt;th&gt;Scaled&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1 CPU cycle&lt;/td&gt;
+      &lt;td&gt;0.3 ns&lt;/td&gt;
+      &lt;td&gt;1 s&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Level 1 cache access&lt;/td&gt;
+      &lt;td&gt;0.9 ns&lt;/td&gt;
+      &lt;td&gt;3 s&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Level 2 cache access&lt;/td&gt;
+      &lt;td&gt;3 ns&lt;/td&gt;
+      &lt;td&gt;10 s&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Level 3 cache access&lt;/td&gt;
+      &lt;td&gt;10 ns&lt;/td&gt;
+      &lt;td&gt;33 s&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Main memory access (DRAM, form CPU)&lt;/td&gt;
+      &lt;td&gt;100 ns&lt;/td&gt;
+      &lt;td&gt;6 min&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Solid-state disk I/O (flash memory)&lt;/td&gt;
+      &lt;td&gt;10-100 µs&lt;/td&gt;
+      &lt;td&gt;9–90 hours&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Rotational disk IlO&lt;/td&gt;
+      &lt;td&gt;1–10 ms&lt;/td&gt;
+      &lt;td&gt;1–12 months&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Internet: San Francisco to New York&lt;/td&gt;
+      &lt;td&gt;40 ms&lt;/td&gt;
+      &lt;td&gt;4 years&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Internet: San Francisco to United Kingdom&lt;/td&gt;
+      &lt;td&gt;81 ms&lt;/td&gt;
+      &lt;td&gt;8 years&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Lightweight hardware virtualization boot&lt;/td&gt;
+      &lt;td&gt;100 ms&lt;/td&gt;
+      &lt;td&gt;11 years&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Internet: San Francisco to Australia&lt;/td&gt;
+      &lt;td&gt;182 ms&lt;/td&gt;
+      &lt;td&gt;19 years&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;OS virtualization system boot&lt;/td&gt;
+      &lt;td&gt;&amp;lt; 1 s&lt;/td&gt;
+      &lt;td&gt;105 years&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TCP timer-based retransmit&lt;/td&gt;
+      &lt;td&gt;1–3 s&lt;/td&gt;
+      &lt;td&gt;105–317 years&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SCSI command time-out&lt;/td&gt;
+      &lt;td&gt;30 s&lt;/td&gt;
+      &lt;td&gt;3 millennia&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Hardware (HW) virtualization system boot&lt;/td&gt;
+      &lt;td&gt;40 s&lt;/td&gt;
+      &lt;td&gt;4 millennia&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Physical system reboot&lt;/td&gt;
+      &lt;td&gt;5 m&lt;/td&gt;
+      &lt;td&gt;32 millennia&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</content><author><name></name></author><summary type="html">Event Latency Scaled 1 CPU cycle 0.3 ns 1 s Level 1 cache access 0.9 ns 3 s Level 2 cache access 3 ns 10 s Level 3 cache access 10 ns 33 s Main memory access (DRAM, form CPU) 100 ns 6 min Solid-state disk I/O (flash memory) 10-100 µs 9–90 hours Rotational disk IlO 1–10 ms 1–12 months Internet: San Francisco to New York 40 ms 4 years Internet: San Francisco to United Kingdom 81 ms 8 years Lightweight hardware virtualization boot 100 ms 11 years Internet: San Francisco to Australia 182 ms 19 years OS virtualization system boot &amp;lt; 1 s 105 years TCP timer-based retransmit 1–3 s 105–317 years SCSI command time-out 30 s 3 millennia Hardware (HW) virtualization system boot 40 s 4 millennia Physical system reboot 5 m 32 millennia</summary></entry><entry><title type="html">Ruby Thread Pooling</title><link href="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.html" rel="alternate" type="text/html" title="Ruby Thread Pooling" /><published>2021-11-14T00:00:00-06:00</published><updated>2021-11-14T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling</id><content type="html" xml:base="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.html">&lt;p&gt;I have been always, naively, restrain myself from using multi-threading in Ruby because, as you know &lt;em&gt;Ruby doesn’t have real threads&lt;/em&gt; until I read these awesome &lt;a href=&quot;https://www.speedshop.co/2020/05/11/the-ruby-gvl-and-scaling.html&quot;&gt;article&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/nateberkopec&quot;&gt;Nate Berkopec&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;I was working on a web crawler, and aside from the huge (and expected) performance boost I implemented a thread pooling function that made my job easier not just for this particular usage but for almost every multithreading application, and I think it might helpful to share.&lt;/p&gt;
+&lt;p&gt;I was working on a web crawler, and aside from the huge (and expected) performance boost I implemented a thread pooling function that made my job easier not just for this particular usage but for almost every multi threading application, and I think it might helpful to share.&lt;/p&gt;
 
 &lt;noscript&gt;&lt;pre&gt;400: Invalid request&lt;/pre&gt;&lt;/noscript&gt;
 &lt;script src=&quot;https://gist.github.com/e18e03227e842d2b3349bbe4ff1afb33.js?file=thread_pool.rb&quot;&gt; &lt;/script&gt;
 
-&lt;p&gt;Feedbacks are always welcome.&lt;/p&gt;</content><author><name></name></author><summary type="html">I have been always, naively, restraing myself from using multithreading in Ruby because, as you know Ruby doesn’t have real threads until I read these awesome artice by Nate Berkopec.</summary></entry><entry><title type="html">Exploring Ceph in a multi-node setup</title><link href="http://0.0.0.0:4000/2021/10/22/exploring-ceph-in-a-multi-node-setup.html" rel="alternate" type="text/html" title="Exploring Ceph in a multi-node setup" /><published>2021-10-22T00:00:00-05:00</published><updated>2021-10-22T00:00:00-05:00</updated><id>http://0.0.0.0:4000/2021/10/22/exploring-ceph-in-a-multi-node-setup</id><content type="html" xml:base="http://0.0.0.0:4000/2021/10/22/exploring-ceph-in-a-multi-node-setup.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Usage:&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;c1&quot;&gt;# Create a Queue (they are thread-safe)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;jobs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Queue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Create tasks and add them to the queue&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;samples&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read_samples&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jobs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sample&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;results&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thread_pool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;pool_size: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;jobs: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;job&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Each thread will excute this method&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# with each item pop'ed from the queue&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;amazoneg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AmazonEG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;job&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;amazoneg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;scrap&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Feedback are always welcome.&lt;/p&gt;</content><author><name></name></author><summary type="html">I have been always, naively, restrain myself from using multi-threading in Ruby because, as you know Ruby doesn’t have real threads until I read these awesome article by Nate Berkopec.</summary></entry><entry><title type="html">Ruby Thread Pooling</title><link href="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.markdown.bak" rel="alternate" type="text/html" title="Ruby Thread Pooling" /><published>2021-11-14T00:00:00-06:00</published><updated>2021-11-14T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.markdown</id><content type="html" xml:base="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.markdown.bak">I have been always, naively, restraing myself from using multithreading in Ruby because, as you know *Ruby doesn't have real threads* until I read these awesome [artice](https://www.speedshop.co/2020/05/11/the-ruby-gvl-and-scaling.html) by [Nate Berkopec](https://twitter.com/nateberkopec).
+
+I was working on a web crawler, and aside from the huge (and expected) performance boost I implemented a thread pooling function that made my job easier not just for this particular usage but for almost every multithreading application, and I think it might helpful to share.
+
+&lt;noscript&gt;&lt;pre&gt;400: Invalid request&lt;/pre&gt;&lt;/noscript&gt;&lt;script src=&quot;https://gist.github.com/e18e03227e842d2b3349bbe4ff1afb33.js?file=thread_pool.rb&quot;&gt; &lt;/script&gt;
+
+Feedbacks are always welcome.</content><author><name></name></author><summary type="html">I have been always, naively, restraing myself from using multithreading in Ruby because, as you know *Ruby doesn't have real threads* until I read these awesome [artice](https://www.speedshop.co/2020/05/11/the-ruby-gvl-and-scaling.html) by [Nate Berkopec](https://twitter.com/nateberkopec).</summary></entry><entry><title type="html">Exploring Ceph in a multi-node setup</title><link href="http://0.0.0.0:4000/2021/10/22/exploring-ceph-in-a-multi-node-setup.html" rel="alternate" type="text/html" title="Exploring Ceph in a multi-node setup" /><published>2021-10-22T00:00:00-05:00</published><updated>2021-10-22T00:00:00-05:00</updated><id>http://0.0.0.0:4000/2021/10/22/exploring-ceph-in-a-multi-node-setup</id><content type="html" xml:base="http://0.0.0.0:4000/2021/10/22/exploring-ceph-in-a-multi-node-setup.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Caph is the future of data storage whether it was objects, blocks or a file system. It provides a great alternative to self-hosted solutions such as GlusterFS in the realm of file systems and to managed services such as AWS S3 as an object storage where it makes more sense to host your own data because you have to store it on private cloud or simply to reduce costs as S3 costs sometimes grow to be pretty &lt;a href=&quot;https://twitter.com/QuinnyPig/status/1443028078196711426&quot;&gt;insane&lt;/a&gt;.&lt;/p&gt;
 
