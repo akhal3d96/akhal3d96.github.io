@@ -47,7 +47,8 @@ exclude:
 #   - gemfiles/
     - Gemfile
     - Gemfile.lock
-    - "scripts/"
+    - scripts/
+    - gems/
 #   - node_modules/
 #   - vendor/bundle/
 #   - vendor/cache/

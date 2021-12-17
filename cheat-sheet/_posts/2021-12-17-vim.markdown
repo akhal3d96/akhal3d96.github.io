@@ -1,0 +1,8 @@
+---
+layout: post
+title:  VIM
+permalink: /:categories/:title:output_ext
+hidden: true
+---
+
+<h1>Hello Vim!</h1>

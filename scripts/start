@@ -21,5 +21,6 @@ PORT="${PORT:=4000}"
 docker run -p $PORT:4000 \
            --rm \
            -v "$PWD:/srv/jekyll" \
+           -e GEM_HOME="/srv/jekyll/gems" \
            -it "jekyll/jekyll:$JEKYLL_VERSION" \
            jekyll serve
