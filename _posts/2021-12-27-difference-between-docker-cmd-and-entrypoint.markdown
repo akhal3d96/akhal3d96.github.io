@@ -3,10 +3,6 @@ layout: post
 title:  Difference between Docker CMD and ENTRYPOINT
 ---
 
-# Docker
-
-## Difference between `CMD` and `ENTRYPOINT`
-
 CMD is replaced if an argument was provided to `docker run` while ENTRYPOINT will append the arguments to the value defined in the entry point. 
 
 You can use both inside the Dockerfile as the parameters of `CMD` will be appended to `ENTRYPOINT`.
