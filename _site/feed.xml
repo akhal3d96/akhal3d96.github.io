@@ -1,4 +1,205 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2021-12-20T08:00:14-06:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">Ahmed Khaled</title><subtitle>A computer hobbyist who does DevOps for a living </subtitle><entry><title type="html">Ruby Thread Pooling</title><link href="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.html" rel="alternate" type="text/html" title="Ruby Thread Pooling" /><published>2021-11-14T00:00:00-06:00</published><updated>2021-11-14T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling</id><content type="html" xml:base="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.html">&lt;p&gt;I have been always, naively, restrain myself from using multi-threading in Ruby because, as you know &lt;em&gt;Ruby doesn’t have real threads&lt;/em&gt; until I read these awesome &lt;a href=&quot;https://www.speedshop.co/2020/05/11/the-ruby-gvl-and-scaling.html&quot;&gt;article&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/nateberkopec&quot;&gt;Nate Berkopec&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2022-01-04T10:33:45-06:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">Ahmed Khaled</title><subtitle>A computer hobbyist who does DevOps for a living </subtitle><entry><title type="html">Exploring Nanos unikernel</title><link href="http://0.0.0.0:4000/2021/12/29/exploring-nano-vms.markdown.backup" rel="alternate" type="text/html" title="Exploring Nanos unikernel" /><published>2021-12-29T00:00:00-06:00</published><updated>2021-12-29T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2021/12/29/exploring-nano-vms.markdown</id><content type="html" xml:base="http://0.0.0.0:4000/2021/12/29/exploring-nano-vms.markdown.backup">![Nanos](/assets/nanos.svg)
+
+A unikernel is an operating system running a single application on top of it, in other terms only one process, there's no multiprocessing in nanos unikernel, however, multithreading is supported.
+
+Using unikernel gives more performance enhancement over monolithic kernel and more security and enormous reduction in the attack surface and also very simplified operations.
+
+![Nanos Security](/assets/nanos_security.png)
+
+What makes *nanos* even more special is that it's written from scratch but it also implements many UNIX system calls so that it can run Linux ELF binaries with minimum and sometimes zero modifications.
+
+It doesn't even stop at that, nanos has an internal in-kernel HTTP server for monitoring, remote management and debugging. The interface uses normal Javascript and WebSocket to pull data from a common information stores that can be updated on-demand from the managment 
+
+
+## Project architecture
+
+The main driver behind Nano VMs is `nanos` unikernel which is orchestrated using `ops` tool it was confusing for me at first.
+
+`ops` provide some pre-compiled suitable to work with `nanos` without any additional configuration such as Ruby, Node, Python, NGINX, Java.
+
+To get a list of all the packages or pre-compiled binaries
+
+```bash
+ops pkg list
+```
+
+## Installation
+
+
+* Dependencies: 
+
+```
+sudo apt install qemu-kvm qemu-utils
+```
+
+
+* Ops
+
+I'm not a fan of piping curl output to a shell but that's what I found on their documentation.
+
+```
+curl https://ops.city/get.sh -sSfL | sh
+```
+
+
+## Usage
+
+Let's try this simple Python 3 HTTP server
+
+
+```python
+import http.server
+import socketserver
+from http import HTTPStatus
+from pathlib import Path
+import os
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(HTTPStatus.OK)
+        self.end_headers()
+        self.wfile.write(b'Hello world from nanos!\n')
+
+        cwd = &quot;Current directoty: {}\n&quot;.format(Path.cwd())
+        self.wfile.write(cwd.encode())
+
+        ls = os.listdir()
+        self.wfile.write(str(ls).encode())
+
+
+httpd = socketserver.TCPServer(('', 8000), Handler)
+httpd.serve_forever()
+```
+
+
+```bash
+ops pkg load python_3.8.6 -p 8000 -a server.py
+```
+
+Then from another terminal
+
+```bash
+$ curl 127.0.0.1:8000
+
+Hello world from nanos!
+Current directoty: /
+['dev', 'usr', 'lib64', 'etc', 'lib', 'python_3.8.6', 'proc', 'sys', 'server.py']
+```
+
+It works so smooth `ops` making deploying applications so simple and the output is quite interesting.
+
+
+## Resources
+
+- [From the Ground Up: How We Built the Nanos Unikernel - Will Jhun, NanoVMs, Inc.](https://www.youtube.com/watch?v=0v21hGvCDPY)
+- [Nanos: The Book](https://nanos.org/thebook)
+- [Ops](https://docs.ops.city/ops/)</content><author><name></name></author><summary type="html">![Nanos](/assets/nanos.svg)</summary></entry><entry><title type="html">Exploring Nanos unikernel</title><link href="http://0.0.0.0:4000/2021/12/29/exploring-nano-vms.html" rel="alternate" type="text/html" title="Exploring Nanos unikernel" /><published>2021-12-29T00:00:00-06:00</published><updated>2021-12-29T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2021/12/29/exploring-nano-vms</id><content type="html" xml:base="http://0.0.0.0:4000/2021/12/29/exploring-nano-vms.html">&lt;p&gt;&lt;img src=&quot;/assets/nanos.svg&quot; alt=&quot;Nanos&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A unikernel is an operating system running a single application on top of it, in other terms only one process, there’s no multiprocessing in nanos unikernel, however, multithreading is supported.&lt;/p&gt;
+
+&lt;p&gt;Using unikernel gives more performance enhancement over monolithic kernel and more security and enormous reduction in the attack surface and also very simplified operations.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/nanos_security.png&quot; alt=&quot;Nanos Security&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;What makes &lt;em&gt;nanos&lt;/em&gt; even more special is that it’s written from scratch but it also implements many UNIX system calls so that it can run Linux ELF binaries with minimum and sometimes zero modifications.&lt;/p&gt;
+
+&lt;p&gt;It doesn’t even stop at that, nanos has an internal in-kernel HTTP server for monitoring, remote management and debugging. The interface uses normal Javascript and WebSocket to pull data from a common information stores that can be updated on-demand from the management interface. It’s still a work-in-progress but it’s very promising.&lt;/p&gt;
+
+&lt;h2 id=&quot;project-architecture&quot;&gt;Project architecture&lt;/h2&gt;
+
+&lt;p&gt;The main driver behind Nano VMs is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nanos&lt;/code&gt; unikernel which is orchestrated using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ops&lt;/code&gt; tool it was confusing for me at first.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ops&lt;/code&gt; provide some pre-compiled suitable to work with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nanos&lt;/code&gt; without any additional configuration such as Ruby, Node, Python, NGINX, Java.&lt;/p&gt;
+
+&lt;p&gt;To get a list of all the packages or pre-compiled binaries&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ops pkg list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Dependencies:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt install qemu-kvm qemu-utils
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ops&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’m not a fan of piping curl output to a shell but that’s what I found on their documentation.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl https://ops.city/get.sh -sSfL | sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
+
+&lt;p&gt;Let’s try this simple Python 3 HTTP server&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;http.server&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socketserver&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;http&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HTTPStatus&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pathlib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Path&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SimpleHTTPRequestHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;do_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send_response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HTTPStatus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end_headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Hello world from nanos!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;cwd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Current directoty: {}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cwd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cwd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;listdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;httpd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socketserver&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TCPServer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;httpd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;serve_forever&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ops pkg load python_3.8.6 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 8000 &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; server.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then from another terminal&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl 127.0.0.1:8000
+
+Hello world from nanos!
+Current directoty: /
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'dev'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'usr'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'lib64'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'etc'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'lib'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'python_3.8.6'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'proc'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'sys'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'server.py'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It works so smooth &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ops&lt;/code&gt; making deploying applications so simple and the output is quite interesting.&lt;/p&gt;
+
+&lt;h2 id=&quot;resources&quot;&gt;Resources&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=0v21hGvCDPY&quot;&gt;From the Ground Up: How We Built the Nanos Unikernel - Will Jhun, NanoVMs, Inc.&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://nanos.org/thebook&quot;&gt;Nanos: The Book&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.ops.city/ops/&quot;&gt;Ops&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Difference between Docker CMD and ENTRYPOINT</title><link href="http://0.0.0.0:4000/2021/12/27/difference-between-docker-cmd-and-entrypoint.html" rel="alternate" type="text/html" title="Difference between Docker CMD and ENTRYPOINT" /><published>2021-12-27T00:00:00-06:00</published><updated>2021-12-27T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2021/12/27/difference-between-docker-cmd-and-entrypoint</id><content type="html" xml:base="http://0.0.0.0:4000/2021/12/27/difference-between-docker-cmd-and-entrypoint.html">&lt;p&gt;CMD is replaced if an argument was provided to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker run&lt;/code&gt; while ENTRYPOINT will append the arguments to the value defined in the entry point.&lt;/p&gt;
+
+&lt;p&gt;You can use both inside the Dockerfile as the parameters of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CMD&lt;/code&gt; will be appended to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;cmd&quot;&gt;CMD&lt;/h3&gt;
+&lt;div class=&quot;language-dockerfile highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# docker run ubuntu-sleep sleep 10&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; ubuntu&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; sleep&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;entrypoint&quot;&gt;ENTRYPOINT&lt;/h3&gt;
+&lt;div class=&quot;language-dockerfile highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# docker run ubuntu-sleep 10&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; ubuntu&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;ENTRYPOINT&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; [&quot;sleep&quot;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">CMD is replaced if an argument was provided to docker run while ENTRYPOINT will append the arguments to the value defined in the entry point.</summary></entry><entry><title type="html">Ruby Thread Pooling</title><link href="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.html" rel="alternate" type="text/html" title="Ruby Thread Pooling" /><published>2021-11-14T00:00:00-06:00</published><updated>2021-11-14T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling</id><content type="html" xml:base="http://0.0.0.0:4000/2021/11/14/ruby-thread-pooling.html">&lt;p&gt;I have been always, naively, restrain myself from using multi-threading in Ruby because, as you know &lt;em&gt;Ruby doesn’t have real threads&lt;/em&gt; until I read these awesome &lt;a href=&quot;https://www.speedshop.co/2020/05/11/the-ruby-gvl-and-scaling.html&quot;&gt;article&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/nateberkopec&quot;&gt;Nate Berkopec&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;I was working on a web crawler, and aside from the huge (and expected) performance boost I implemented a thread pooling function that made my job easier not just for this particular usage but for almost every multi threading application, and I think it might helpful to share.&lt;/p&gt;
 
