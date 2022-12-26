@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Notes About Go (part 1) | Ahmed Khaled</title>
+<meta name="generator" content="Jekyll v4.2.1" />
+<meta property="og:title" content="Notes About Go (part 1)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This is - probably - a series of short notes about Go during my learning journey. There might be some errors and things I got wrong here and there that I maybe fix later during my learning journey or maybe I don’t." />
+<meta property="og:description" content="This is - probably - a series of short notes about Go during my learning journey. There might be some errors and things I got wrong here and there that I maybe fix later during my learning journey or maybe I don’t." />
+<link rel="canonical" href="akhal3d96.github.io/2022/12/26/notes-about-go-(part-1).html" />
+<meta property="og:url" content="akhal3d96.github.io/2022/12/26/notes-about-go-(part-1).html" />
+<meta property="og:site_name" content="Ahmed Khaled" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-12-26T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Notes About Go (part 1)" />
+<script type="application/ld+json">
+{"headline":"Notes About Go (part 1)","dateModified":"2022-12-26T00:00:00+00:00","datePublished":"2022-12-26T00:00:00+00:00","description":"This is - probably - a series of short notes about Go during my learning journey. There might be some errors and things I got wrong here and there that I maybe fix later during my learning journey or maybe I don’t.","url":"akhal3d96.github.io/2022/12/26/notes-about-go-(part-1).html","mainEntityOfPage":{"@type":"WebPage","@id":"akhal3d96.github.io/2022/12/26/notes-about-go-(part-1).html"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="akhal3d96.github.io/feed.xml" title="Ahmed Khaled" /></head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Ahmed Khaled</a>
+
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/resources">Resouces</a>
+        </div>
+      </nav>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Notes About Go (part 1)</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-12-26T00:00:00+00:00" itemprop="datePublished">Dec 26, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This is - probably - a series of short notes about Go during my learning journey. There might be some errors and things I got wrong here and there that I maybe fix later during my learning journey or maybe I don’t.</p>
+
+<h2 id="variables">Variables</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>:=</td>
+      <td>Deceleration (first time)</td>
+    </tr>
+    <tr>
+      <td>=</td>
+      <td>Assignment</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Note:</strong> Short deceleration <code class="language-plaintext highlighter-rouge">:=</code> can assign variables too <strong>BUT</strong> has to declare 1 new variables at least. For example:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// Correct</span>
+
+<span class="n">in</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">o</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">o</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// Wrong (won't compile)</span>
+
+<span class="n">in</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">o</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="n">in</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">o</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="scope">Scope</h3>
+<p><img src="/assets/go_variables_scope.svg" alt="Go Variables Scope Diagram" /></p>
+
+<h2 id="go-routines">Go Routines</h2>
+
+<ol>
+  <li>
+    <p>Create a channel</p>
+
+    <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="n">String</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Call a function with <code class="language-plaintext highlighter-rouge">go</code> prefixed and pass the channel variable as an argument.
+    <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">go</span> <span class="n">myFunc</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>To receive output from a channel you can do something like:</p>
+
+    <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="o">&lt;-</span> <span class="n">ch</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>To send things to the channel using you can do something like:</p>
+
+    <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">ch</span> <span class="o">&lt;-</span> <span class="s">"String
+</span></code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="fmt">fmt</h2>
+
+<p>Printf variables referencing and octal numbers:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">o</span> <span class="o">:=</span> <span class="m">0700</span> <span class="c">// Octal numbers can be defined with `0` prefixed </span>
+<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%d  %[1]o  %#[1]o"</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="c">// 448  700  0700</span>
+</code></pre></div></div>
+
+  </div><a class="u-url" href="/2022/12/26/notes-about-go-(part-1).html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Ahmed Khaled</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Ahmed Khaled</li><li><a class="u-email" href="mailto:ahmed.khaled1512@yahoo.com">ahmed.khaled1512@yahoo.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/akhal3d96"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">akhal3d96</span></a></li><li><a href="https://www.twitter.com/akhal3d_"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">akhal3d_</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A computer hobbyist who does DevOps for a living </p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

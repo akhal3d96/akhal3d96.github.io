@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Exploring Ceph in a multi-node setup | Ahmed Khaled</title>
+<meta name="generator" content="Jekyll v4.2.1" />
+<meta property="og:title" content="Exploring Ceph in a multi-node setup" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="akhal3d96.github.io/2021/10/22/exploring-ceph-in-a-multi-node-setup.html" />
+<meta property="og:url" content="akhal3d96.github.io/2021/10/22/exploring-ceph-in-a-multi-node-setup.html" />
+<meta property="og:site_name" content="Ahmed Khaled" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-10-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Exploring Ceph in a multi-node setup" />
+<script type="application/ld+json">
+{"headline":"Exploring Ceph in a multi-node setup","dateModified":"2021-10-22T00:00:00+00:00","datePublished":"2021-10-22T00:00:00+00:00","description":"Introduction","url":"akhal3d96.github.io/2021/10/22/exploring-ceph-in-a-multi-node-setup.html","mainEntityOfPage":{"@type":"WebPage","@id":"akhal3d96.github.io/2021/10/22/exploring-ceph-in-a-multi-node-setup.html"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="akhal3d96.github.io/feed.xml" title="Ahmed Khaled" /></head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Ahmed Khaled</a>
+
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/resources">Resouces</a>
+        </div>
+      </nav>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Exploring Ceph in a multi-node setup</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2021-10-22T00:00:00+00:00" itemprop="datePublished">Oct 22, 2021
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+
+<p>Caph is the future of data storage whether it was objects, blocks or a file system. It provides a great alternative to self-hosted solutions such as GlusterFS in the realm of file systems and to managed services such as AWS S3 as an object storage where it makes more sense to host your own data because you have to store it on private cloud or simply to reduce costs as S3 costs sometimes grow to be pretty <a href="https://twitter.com/QuinnyPig/status/1443028078196711426">insane</a>.</p>
+
+<h2 id="environment-setup">Environment setup</h2>
+
+<p>I used Vagrant to create a declarative configuration of my environment.</p>
+
+<p>My setup consist of three virtual machines with Ubuntu 20.04 and attached disk storage of 10 GiB to each one of them (except the first machine it has two disks). Ceph documentation says the minimum disk size is 5 GiB but I had problems in the past working with storage less than 10 GiB so I wanted to be in the safe side.</p>
+
+<p>I gave the admin host more memory than the others because it’s the one I mainly interact with and I wanted to make it fast and smooth as possible.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Vagrantfile</span>
+
+<span class="c1"># -*- mode: ruby -*-</span>
+<span class="c1"># vi: set ft=ruby :</span>
+
+<span class="no">Vagrant</span><span class="p">.</span><span class="nf">configure</span><span class="p">(</span><span class="s2">"2"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">num_of_nodes</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="p">(</span><span class="n">num_of_nodes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+    
+    <span class="n">node_name</span> <span class="o">=</span> <span class="s2">"ceph-</span><span class="si">#{</span><span class="n">node</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
+    
+    <span class="n">config</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">define</span> <span class="n">node_name</span> <span class="k">do</span> <span class="o">|</span><span class="n">ceph_node</span><span class="o">|</span>
+      <span class="n">ceph_node</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">box</span> <span class="o">=</span> <span class="s2">"ubuntu/focal64"</span>
+      <span class="n">ceph_node</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">hostname</span> <span class="o">=</span> <span class="n">node_name</span>
+      <span class="n">ceph_node</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">network</span> <span class="s2">"private_network"</span><span class="p">,</span> <span class="ss">type: </span><span class="s2">"dhcp"</span>
+
+      <span class="n">ceph_node</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">disk</span> <span class="ss">:disk</span><span class="p">,</span> <span class="ss">size: </span><span class="s2">"10GB"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"ceph_storage"</span>
+
+      <span class="c1"># CephFS</span>
+      <span class="n">ceph_node</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">disk</span> <span class="ss">:disk</span><span class="p">,</span> <span class="ss">size: </span><span class="s2">"10GB"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"ceph_storage_extra"</span> <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="mi">0</span>
+
+      <span class="n">ceph_node</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">provision</span> <span class="s2">"shell"</span><span class="p">,</span> <span class="ss">path: </span><span class="s2">"install-docker.sh"</span>
+      <span class="n">ceph_node</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">provision</span> <span class="s2">"shell"</span><span class="p">,</span> <span class="ss">inline: </span><span class="s2">"timedatectl set-ntp on"</span>
+
+      <span class="n">ceph_node</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">provider</span> <span class="s2">"virtualbox"</span> <span class="k">do</span> <span class="o">|</span><span class="n">vb</span><span class="o">|</span>
+        <span class="n">vb</span><span class="p">.</span><span class="nf">memory</span> <span class="o">=</span> <span class="n">node</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">?</span> <span class="s2">"3072"</span> <span class="p">:</span> <span class="s2">"2048"</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>I used <code class="language-plaintext highlighter-rouge">cephadm</code> to create my Ceph cluster, which requires Docker (or Podman) to be installed on the machine I want to run it on so I made Vagrant execute <a href="https://gist.github.com/EvgenyOrekhov/1ed8a4466efd0a59d73a11d753c0167b#file-install-docker-sh">install-docker.sh</a> on all the virtual machines it creates but I edited it to suit my needs.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># install-docker.sh</span>
+
+<span class="c">#!/bin/sh</span>
+
+<span class="nb">set</span> <span class="nt">-o</span> errexit
+<span class="nb">set</span> <span class="nt">-o</span> nounset
+
+<span class="nv">IFS</span><span class="o">=</span><span class="si">$(</span><span class="nb">printf</span> <span class="s1">'\n\t'</span><span class="si">)</span>
+
+apt remove <span class="nt">--yes</span> docker docker-engine docker.io containerd runc <span class="o">||</span> <span class="nb">true
+</span>apt update
+apt <span class="nt">--yes</span> <span class="nt">--no-install-recommends</span> <span class="nb">install </span>apt-transport-https ca-certificates
+wget <span class="nt">--quiet</span> <span class="nt">--output-document</span><span class="o">=</span>- https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository <span class="nt">--yes</span> <span class="s2">"deb [arch=</span><span class="si">$(</span>dpkg <span class="nt">--print-architecture</span><span class="si">)</span><span class="s2">] https://download.docker.com/linux/ubuntu </span><span class="si">$(</span>lsb_release <span class="nt">--codename</span> <span class="nt">--short</span><span class="si">)</span><span class="s2"> stable"</span>
+apt update
+apt <span class="nt">--yes</span> <span class="nt">--no-install-recommends</span> <span class="nb">install </span>docker-ce docker-ce-cli containerd.io
+systemctl <span class="nb">enable </span>docker
+<span class="nb">printf</span> <span class="s1">'\nDocker installed successfully\n\n'</span>
+</code></pre></div></div>
+
+<p>I also activated time synchronization on all the hosts in the <code class="language-plaintext highlighter-rouge">Vagrantfile</code> because it was disabled for some reason and Ceph requires it to be activated.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>timedatectl set-ntp on
+</code></pre></div></div>
+
+<p>After running <code class="language-plaintext highlighter-rouge">vagrant up</code> you should have three virtual machines on a private network which is also accessible from your host machine in something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph-1 (admin)
+IPv4 address for enp0s8: 172.28.128.7
+
+
+ceph-2
+IPv4 address for enp0s8: 172.28.128.8
+
+
+ceph-3
+IPv4 address for enp0s8: 172.28.128.9
+</code></pre></div></div>
+
+<h2 id="creating-the-cluster">Creating the cluster</h2>
+
+<p>On the host machine:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vagrant ssh ceph-1
+</code></pre></div></div>
+
+<p>To create our Ceph cluster using <code class="language-plaintext highlighter-rouge">cephadm</code> we have to download the script from Github <strong>on the admin host machine</strong> and make it executable:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--silent</span> <span class="nt">--remote-name</span> <span class="nt">--location</span> https://github.com/ceph/ceph/raw/pacific/src/cephadm/cephadm
+
+<span class="nb">chmod</span> +x cephadm
+</code></pre></div></div>
+
+<p>The script itself is sufficient enough to bootstrap the cluster but it’s more convenient to install it as a package on the system.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./cephadm add-repo <span class="nt">--release</span> pacific
+./cephadm <span class="nb">install</span>
+</code></pre></div></div>
+
+<p>After that we can bootstrap our cluster safely:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cephadm bootstrap --mon-ip 172.28.128.7 --ssh-user vagrant
+</code></pre></div></div>
+
+<p>Obviously <code class="language-plaintext highlighter-rouge">172.28.128.7</code> is the IP of the admin host (current host).</p>
+
+<p>From Ceph documentation:</p>
+
+<blockquote>
+  <p>The –ssh-user *<user>* option makes it possible to choose which ssh user cephadm will use to connect to hosts. The associated ssh key will be added to /home/*<user>*/.ssh/authorized_keys. The user that you designate with this option must have passwordless sudo access.</user></user></p>
+</blockquote>
+
+<p>This is slightly off-topic but Vagrant by default creates a passwordless sudo and passwordless SSH access to the virtual machines in creates, the SSH access is possible through private key which it creates and puts in <code class="language-plaintext highlighter-rouge">.vagrant/machines/*&lt;machine name&gt;*/virtualbox/private_key</code> in the host Vagrantfile directory. Vagrant also maps Vagrantfile directory to <code class="language-plaintext highlighter-rouge">/vagrant</code> in the guest virtual machine, so for example <code class="language-plaintext highlighter-rouge">ceph-3</code> host private SSH key is located in <code class="language-plaintext highlighter-rouge">ceph-1</code> host in directory <code class="language-plaintext highlighter-rouge">/vagrant/.vagrant/machines/ceph-3/virtualbox/private_key</code></p>
+
+<p>Anyway, back to Ceph, after running the bootstrap command you should get your dashboard credentials:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lwdn39lh829s1nal3k2y.png" alt="ceph initial credentials" /></p>
+
+<p>After that, from your host machine, replace <code class="language-plaintext highlighter-rouge">ceph-1</code> with the IP of the virtual machine of your admin host in order to access the dashboard. The dashboard will ask you to change your password to a new one do it and make sure you can access the dashboard successfully.</p>
+
+<p>If everything run smoothly we can now add new hosts to the cluster.</p>
+
+<p>First we run <code class="language-plaintext highlighter-rouge">ssh-agent</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">eval</span> <span class="si">$(</span>ssh-agent<span class="si">)</span>
+</code></pre></div></div>
+
+<p>Then we add the private keys of the other virtual machines (<code class="language-plaintext highlighter-rouge">ceph-2</code> and <code class="language-plaintext highlighter-rouge">ceph-3</code>) we want to add to the cluster.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-add /vagrant/.vagrant/machines/ceph-2/virtualbox/private_key
+
+ssh-add /vagrant/.vagrant/machines/ceph-3/virtualbox/private_key
+</code></pre></div></div>
+
+<p>We now copy Ceph public keys to <code class="language-plaintext highlighter-rouge">authorized_keys</code> in the other virtual machines to make Ceph able to access those machines and add them to the cluster.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-copy-id <span class="nt">-f</span> <span class="nt">-i</span> /etc/ceph/ceph.pub vagrant@172.28.128.9
+ssh-copy-id <span class="nt">-f</span> <span class="nt">-i</span> /etc/ceph/ceph.pub vagrant@172.28.128.8
+</code></pre></div></div>
+
+<p>Add them to the clusters.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>ceph orch host add ceph-2 172.28.128.8
+<span class="nb">sudo </span>ceph orch host add ceph-3 172.28.128.9
+</code></pre></div></div>
+
+<p>Notice that the hostname should match the hostname on those machines.</p>
+
+<p>It might take some time (couple of minutes in my case) for Ceph to pull all the images and run all the containers on those machines in order to be added to the cluster.</p>
+
+<p>Make sure all the other hosts are added you should open the dashboard and get something like this:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7ua0d6tbbni1fb7whnst.png" alt="ceph dashboard after adding the three hosts" /></p>
+
+<p>Notice that the cluster health is yellow because there’s no storage yet Ceph can use to store data in it.</p>
+
+<p>Finally in order to add the disks we attached earlier we have to deploy OSD Service.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>ceph orch apply osd <span class="nt">--all-available-devices</span>
+</code></pre></div></div>
+
+<p>It might take some time (couple of minutes too) until it propagate in the three hosts and add their attached disks.</p>
+
+<p>After that your cluster status should be healthy and you can run object storage services and file system services in your cluster.</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dpi8agp89cj1qk5op1nk.png" alt="ceph dashboard showing a healthy ceph cluster" /></p>
+
+<h3 id="object-storage">Object Storage</h3>
+
+<p>To use the Object Gateway a RGW service must be running.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph orch apply rgw s3
+</code></pre></div></div>
+
+<p>You should also create a <code class="language-plaintext highlighter-rouge">radosgw</code> user in order to access the object gateway service whether it was from an API or from Ceph dashboard.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph dashboard set-rgw-credentials
+
+radosgw-admin user create <span class="nt">--uid</span><span class="o">=</span><span class="s2">"ahmed"</span> <span class="nt">--display-name</span><span class="o">=</span><span class="s2">"Ahmed Khaled"</span> <span class="nt">--system</span>
+</code></pre></div></div>
+
+<p>You should get a result similar to this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ahmed"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"display_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ahmed Khaled"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"suspended"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"max_buckets"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"subusers"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ahmed"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"access_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"05LT3KPECW7E30X2P4UO"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"secret_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bBEJBxiM6JkRDUzCpGzN7EkGaVr9qSjqlDdNZWMp"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"swift_keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"caps"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"op_mask"</span><span class="p">:</span><span class="w"> </span><span class="s2">"read, write, delete"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"system"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"default_placement"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"default_storage_class"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"placement_tags"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"bucket_quota"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"check_on_raw"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_size_kb"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_objects"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"user_quota"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"check_on_raw"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_size_kb"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_objects"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"temp_url_keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rgw"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"mfa_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">access_key</code> and <code class="language-plaintext highlighter-rouge">secret_key</code> are what we care about the most in the result.</p>
+
+<p>In order to access the object gateway from the dashboard we should import the access key and the secret key.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo </span>05LT3KPECW7E30X2P4UO <span class="o">&gt;</span> /tmp/access_key
+<span class="nb">echo </span>bBEJBxiM6JkRDUzCpGzN7EkGaVr9qSjqlDdNZWMp <span class="o">&gt;</span> /tmp/secret_key
+
+ceph dashboard set-rgw-api-access-key <span class="nt">-i</span> /tmp/access_key 
+ceph dashboard set-rgw-api-secret-key <span class="nt">-i</span> /tmp/secret_key 
+</code></pre></div></div>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/it07tkpnmzndsp5znv8v.png" alt="ceph dashbaord showing the radosgw user created" /></p>
+
+<h4 id="test-ceph-s3-like-api-using-boto">Test Ceph S3-like API using boto</h4>
+
+<p>In your host machine setup a virtual Python environment using <code class="language-plaintext highlighter-rouge">virtualenv</code> in any directory you want.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virtualenv <span class="nt">--python</span><span class="o">=</span>python2.7 .venv
+<span class="nb">source</span> .venv/bin/activate
+pip <span class="nb">install </span>boto
+</code></pre></div></div>
+
+<p>I used Python 2.7 because it’s what the official documentation supports but I do’t think there would ny any issue for Python 3 and boto3 to work with Ceph API.</p>
+
+<p>To make it more real-world-like I added the IP of the Ceph admin virtual machine to my <code class="language-plaintext highlighter-rouge">/etc/hosts</code> and named it ‘objects.lan’</p>
+
+<p>For more information about private networks and private domains check <a href="https://dev.to/akhal3d/maintain-local-domains-for-your-private-networks-47df">my article</a> on this topic.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>172.28.128.7    objects.lan
+</code></pre></div></div>
+
+<p>After that create the Python test file.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># s3.py
+</span>
+<span class="kn">import</span> <span class="nn">boto</span>
+<span class="kn">import</span> <span class="nn">boto.s3.connection</span>
+
+<span class="c1"># This is for quick demonstration purpose 
+# Never write your credentials in a code
+</span><span class="n">access_key</span> <span class="o">=</span> <span class="s">'05LT3KPECW7E30X2P4UO'</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="s">'bBEJBxiM6JkRDUzCpGzN7EkGaVr9qSjqlDdNZWMp'</span>
+
+
+<span class="n">host</span> <span class="o">=</span> <span class="s">'objects.lan'</span> <span class="c1"># /etc/hosts
+</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">boto</span><span class="p">.</span><span class="n">connect_s3</span><span class="p">(</span>
+        <span class="n">aws_access_key_id</span> <span class="o">=</span> <span class="n">access_key</span><span class="p">,</span>
+        <span class="n">aws_secret_access_key</span> <span class="o">=</span> <span class="n">secret_key</span><span class="p">,</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">host</span><span class="p">,</span>
+        <span class="n">is_secure</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>               <span class="c1"># uncomment if you are not using ssl
+</span>        <span class="n">calling_format</span> <span class="o">=</span> <span class="n">boto</span><span class="p">.</span><span class="n">s3</span><span class="p">.</span><span class="n">connection</span><span class="p">.</span><span class="n">OrdinaryCallingFormat</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+<span class="c1"># Create a new nucket
+</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s">'my-new-bucket'</span><span class="p">)</span>
+
+
+<span class="c1"># List all buckets
+</span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">conn</span><span class="p">.</span><span class="n">get_all_buckets</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"{name}</span><span class="se">\t</span><span class="s">{created}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">bucket</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">created</span> <span class="o">=</span> <span class="n">bucket</span><span class="p">.</span><span class="n">creation_date</span><span class="p">,</span>
+        <span class="p">))</span>
+
+
+<span class="c1"># Add object to bucket
+</span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="p">.</span><span class="n">new_key</span><span class="p">(</span><span class="s">'hello.txt'</span><span class="p">)</span>
+<span class="n">key</span><span class="p">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">'Hello World!</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+
+<span class="c1"># Generate a presigned URL
+</span><span class="n">object_key</span> <span class="o">=</span> <span class="n">bucket</span><span class="p">.</span><span class="n">get_key</span><span class="p">(</span><span class="s">'hello.txt'</span><span class="p">)</span>
+
+<span class="c1"># Make the url available for 20 seconds only
+</span><span class="n">object_url</span> <span class="o">=</span> <span class="n">object_key</span><span class="p">.</span><span class="n">generate_url</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">query_auth</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">force_http</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">object_url</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Run it and you should get a similar result.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python s3.py 
+my-new-bucket	2021-10-08T13:37:03.013Z
+http://objects.lan/my-new-bucket/hello.txt?Signature=4ukxcnWqcNjbRKbF1gJ8%2FQ9eJMI%3D&amp;Expires=1633873445&amp;AWSAccessKeyId=05LT3KPECW7E30X2P4UO
+</code></pre></div></div>
+
+<p>Test it</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ for i in {1..5}; do curl 'http://objects.lan/my-new-bucket/hello.txt?Signature=4ukxcnWqcNjbRKbF1gJ8%2FQ9eJMI%3D&amp;Expires=1633873445&amp;AWSAccessKeyId=05LT3KPECW7E30X2P4UO'; sleep 5; done
+
+Hello World!
+Hello World!
+Hello World!
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;Error&gt;&lt;Code&gt;AccessDenied&lt;/Code&gt;&lt;RequestId&gt;tx000000000000000000043-006162f2c5-455c5-default&lt;/RequestId&gt;&lt;HostId&gt;455c5-default-default&lt;/HostId&gt;&lt;/Error&gt;&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;Error&gt;&lt;Code&gt;AccessDenied&lt;/Code&gt;&lt;RequestId&gt;tx000000000000000000044-006162f2ca-455c5-default&lt;/RequestId&gt;&lt;HostId&gt;455c5-default-default&lt;/HostId&gt;&lt;/Error
+</code></pre></div></div>
+
+<h2 id="file-system">File System</h2>
+<p>Creating and testing the files system is much easier and more straightforward.</p>
+
+<p>To create a file system named cfs</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs volume create cfs
+</code></pre></div></div>
+
+<p>Create a client to access the file system</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs authorize cfs client.cfs / rw <span class="o">&gt;</span> /etc/ceph/ceph.client.cfs.keyring
+</code></pre></div></div>
+
+<p>Test it</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir /mnt/mycephfs/test
+</code></pre></div></div>
+
+<p>Now in the dashboard:
+<img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/buyvxozxpgmx4ltado80.png" alt="ceph dashboard showing the directory we created" /></p>
+
+<h2 id="notes">Notes</h2>
+<ul>
+  <li>
+    <p>You can send commands to Ceph clusters from a <a href="https://docs.ceph.com/en/latest/cephfs/mount-prerequisites/#general-pre-requisite-for-mounting-cephfs">client host</a>.</p>
+  </li>
+  <li>
+    <p>AWS uses SSD (as in <code class="language-plaintext highlighter-rouge">gp2</code> and <code class="language-plaintext highlighter-rouge">gp3</code> types) doesn’t work natievly with Ceph but there’s a workaround for this using <a href="https://docs.ceph.com/en/pacific/ceph-volume/index.html">ceph-volume</a>.</p>
+  </li>
+  <li>
+    <p>Ceph is designed by default to be highly available so it by default expects multiple nodes with multiple disks however it can be configured to work in a single node environment.</p>
+  </li>
+</ul>
+
+  </div><a class="u-url" href="/2021/10/22/exploring-ceph-in-a-multi-node-setup.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Ahmed Khaled</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Ahmed Khaled</li><li><a class="u-email" href="mailto:ahmed.khaled1512@yahoo.com">ahmed.khaled1512@yahoo.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/akhal3d96"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">akhal3d96</span></a></li><li><a href="https://www.twitter.com/akhal3d_"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">akhal3d_</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A computer hobbyist who does DevOps for a living </p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
