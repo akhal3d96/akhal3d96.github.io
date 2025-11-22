@@ -1,0 +1,8 @@
+baseURL = 'https://blog.ahmedayoub.com/'
+languageCode = 'en-us'
+title = 'Ahmed Ayoub'
+theme="archie"
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'

@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# 
+# Author: Ahmed Ayoub <ahmed.khaled1512@yahoo.com>
+#
+# License: ISC
+#
+# Usage: ./scripts/create "<post name>"
+#
+# Example: ./scripts/create "Maintain local domains for your private network"
+
+FILENAME="$(echo "$1" | xargs echo -n  | tr -cd 'A-Za-z0-9 ' | tr [:upper:] [:lower:] | tr -s [:blank:] '-' ).md"
+
+hugo new content "content/posts/${FILENAME}"
